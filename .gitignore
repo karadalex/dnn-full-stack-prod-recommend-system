@@ -131,3 +131,5 @@ dmypy.json
 
 datasets/**
 !datasets/merged-small.json
+
+lakectl.yaml
