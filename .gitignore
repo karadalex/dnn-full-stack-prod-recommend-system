@@ -129,4 +129,5 @@ dmypy.json
 .pyre/
 
 
-datasets
+datasets/**
+!datasets/merged-small.json
