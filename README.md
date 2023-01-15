@@ -50,6 +50,7 @@ pipenv install
 - [x] StreamLit app [https://docs.streamlit.io/library/get-started/create-an-app](https://docs.streamlit.io/library/get-started/create-an-app)
 - [x] jupyter notebooks for exploration
 - [ ] click cli to clean/prepare data, make a huggingface dataset and other project scripts [click](https://click.palletsprojects.com/en/8.1.x/)
+- [ ] Github CI/CD pipelines
 
 
 ## Dataset links

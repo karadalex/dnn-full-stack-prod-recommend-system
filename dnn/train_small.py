@@ -1,10 +1,20 @@
+import mlflow
 import pandas as pd
 import tensorflow as tf
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.models import Sequential
+import os
 
 
-MODEL_VERSION = 1
+MODEL_VERSION_MAJOR = os.getenv("MODEL_VERSION_MAJOR", 0)
+MODEL_VERSION_MINOR = os.getenv("MODEL_VERSION_MINOR", 1)
+MODEL_VERSION_PATCH = os.getenv("MODEL_VERSION_PATCH", 0)
+MODEL_VERSION = f"{MODEL_VERSION_MAJOR}.{MODEL_VERSION_MINOR}.{MODEL_VERSION_PATCH}"
+MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5000")
+
+mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+
+mlflow.tensorflow.autolog()
 
 X_train_df = pd.read_csv("X_train_small.csv")
 X_test_df = pd.read_csv("X_test_small.csv")
