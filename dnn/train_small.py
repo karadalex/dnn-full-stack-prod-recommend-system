@@ -15,73 +15,79 @@ MODEL_VERSION = f"{MODEL_VERSION_MAJOR}.{MODEL_VERSION_MINOR}.{MODEL_VERSION_PAT
 MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5000")
 MODEL_NAME = f"movie-recommender-small-v{MODEL_VERSION}"
 
-mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
 
-# Register model name in the model registry
-client = MlflowClient()
-try:
-  client.create_registered_model(MODEL_NAME)
-except:
-  pass
+def train_small():
+  mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
 
-mlflow.tensorflow.autolog(
-  registered_model_name=MODEL_NAME
-)
+  # Register model name in the model registry
+  client = MlflowClient()
+  try:
+    client.create_registered_model(MODEL_NAME)
+  except:
+    pass
 
-X_train_df = pd.read_csv("X_train_small.csv")
-X_test_df = pd.read_csv("X_test_small.csv")
-Y_train_df = pd.read_csv("Y_train_small.csv")
-Y_test_df = pd.read_csv("Y_test_small.csv")
+  mlflow.tensorflow.autolog(
+    registered_model_name=MODEL_NAME
+  )
 
-X_train = X_train_df.to_numpy()
-X_test = X_test_df.to_numpy()
-Y_train = Y_train_df.to_numpy() / 10
-Y_test = Y_test_df.to_numpy()
+  X_train_df = pd.read_csv("X_train_small.csv")
+  X_test_df = pd.read_csv("X_test_small.csv")
+  Y_train_df = pd.read_csv("Y_train_small.csv")
+  Y_test_df = pd.read_csv("Y_test_small.csv")
 
-# design the neural network model
-model = Sequential()
-model.add(Dense(44, input_dim=X_train.shape[1], activation='relu', kernel_initializer='he_uniform'))
-model.add(Dense(256, activation='relu', kernel_initializer='he_uniform'))
-model.add(Dense(128, activation='relu', kernel_initializer='he_uniform'))
-model.add(Dense(64, activation='relu', kernel_initializer='he_uniform'))
-model.add(Dense(32, activation='relu', kernel_initializer='he_uniform'))
-model.add(Dense(16, activation='relu', kernel_initializer='he_uniform'))
-model.add(Dense(1))
+  X_train = X_train_df.to_numpy()
+  X_test = X_test_df.to_numpy()
+  Y_train = Y_train_df.to_numpy() / 10
+  Y_test = Y_test_df.to_numpy()
 
-# define the loss function and optimization algorithm
-model.compile(
-  loss='mse', 
-  optimizer='adam'
-)
+  # design the neural network model
+  model = Sequential()
+  model.add(Dense(44, input_dim=X_train.shape[1], activation='relu', kernel_initializer='he_uniform'))
+  model.add(Dense(256, activation='relu', kernel_initializer='he_uniform'))
+  model.add(Dense(128, activation='relu', kernel_initializer='he_uniform'))
+  model.add(Dense(64, activation='relu', kernel_initializer='he_uniform'))
+  model.add(Dense(32, activation='relu', kernel_initializer='he_uniform'))
+  model.add(Dense(16, activation='relu', kernel_initializer='he_uniform'))
+  model.add(Dense(1))
 
-# Display the model's architecture
-model.summary()
+  # define the loss function and optimization algorithm
+  model.compile(
+    loss='mse', 
+    optimizer='adam'
+  )
 
-# Train the model
-history = model.fit(
-  X_train,
-  Y_train,
-  batch_size=100,
-  epochs=20,
-  verbose=1
-  # We pass some validation for
-  # monitoring validation loss and metrics
-  # at the end of each epoch
-  # validation_data=(X_val, Y_val),
-)
+  # Display the model's architecture
+  model.summary()
 
-print(history.history)
+  # Train the model
+  history = model.fit(
+    X_train,
+    Y_train,
+    batch_size=100,
+    epochs=20,
+    verbose=1
+    # We pass some validation for
+    # monitoring validation loss and metrics
+    # at the end of each epoch
+    # validation_data=(X_val, Y_val),
+  )
 
-# Evaluate the model on the test data using `evaluate`
-print("Evaluate on test data")
-results = model.evaluate(X_test, Y_test, batch_size=128)
-print("test loss, test acc:", results)
+  print(history.history)
 
-# Generate predictions (probabilities -- the output of the last layer)
-# on new data using `predict`
-print("Generate predictions for 3 samples")
-predictions = model.predict(X_test[:3]) * 10
-print("predicted ratings:", predictions)
-print("actual ratings:", Y_test[:3])
+  # Evaluate the model on the test data using `evaluate`
+  print("Evaluate on test data")
+  results = model.evaluate(X_test, Y_test, batch_size=128)
+  print("test loss, test acc:", results)
 
-model.save(MODEL_NAME)
+  # Generate predictions (probabilities -- the output of the last layer)
+  # on new data using `predict`
+  print("Generate predictions for 3 samples")
+  predictions = model.predict(X_test[:3]) * 10
+  print("predicted ratings:", predictions)
+  print("actual ratings:", Y_test[:3])
+
+  model.save(MODEL_NAME)
+
+
+if __name__ == "__main__":
+  train_small()
