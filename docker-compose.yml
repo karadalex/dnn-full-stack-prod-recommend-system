@@ -13,7 +13,7 @@ services:
   lakefs:
     image: treeverse/lakefs
     ports:
-      - 8000:8000
+      - 8001:8000
     command: run --local-settings
 
   minio:

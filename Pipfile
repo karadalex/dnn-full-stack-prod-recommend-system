@@ -12,6 +12,7 @@ fastapi = "*"
 uvicorn = "*"
 click = "*"
 scikit-learn = "*"
+mlflow = "*"
 
 [dev-packages]
 ipykernel = "*"

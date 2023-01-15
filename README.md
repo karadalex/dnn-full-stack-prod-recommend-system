@@ -24,6 +24,17 @@ pipenv install
 - To run docker services `docker-compose up -d`
 - To run data gui `cd explore && streamlit run data_gui.py`
 
+## Services & Ports
+
+| Service             | Port      |
+|---------------------|-----------|
+| NextJS Web Frontend |3000       |
+| MLFlow Server       |5000       |
+| FastAPI             |8000       |
+| LakeFS              |8001       |
+| Minio               |9002,9003  |
+
+
 ## TODOs
 
 - [x] nextjs, show simple grid of movies
