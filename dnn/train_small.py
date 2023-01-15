@@ -9,6 +9,7 @@ from mlflow import MlflowClient
 
 MODEL_VERSION_MAJOR = os.getenv("MODEL_VERSION_MAJOR", 0)
 MODEL_VERSION_MINOR = os.getenv("MODEL_VERSION_MINOR", 1)
+# No need for patch version because this will be already generated automatically from mlflow
 MODEL_VERSION_PATCH = os.getenv("MODEL_VERSION_PATCH", 0)
 MODEL_VERSION = f"{MODEL_VERSION_MAJOR}.{MODEL_VERSION_MINOR}.{MODEL_VERSION_PATCH}"
 MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5000")
@@ -18,9 +19,14 @@ mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
 
 # Register model name in the model registry
 client = MlflowClient()
-client.create_registered_model(MODEL_NAME)
+try:
+  client.create_registered_model(MODEL_NAME)
+except:
+  pass
 
-mlflow.tensorflow.autolog()
+mlflow.tensorflow.autolog(
+  registered_model_name=MODEL_NAME
+)
 
 X_train_df = pd.read_csv("X_train_small.csv")
 X_test_df = pd.read_csv("X_test_small.csv")
