@@ -29,14 +29,14 @@ pipenv install
 - [x] nextjs, show simple grid of movies
 - [x] movie dataset from kaggle [https://www.kaggle.com/datasets/rounakbanik/the-movies-dataset](https://www.kaggle.com/datasets/rounakbanik/the-movies-dataset)
 - [ ] mlflow to log experiments: (hyperparameter tuning)
-- [ ] tensorflow for dnn
+- [x] tensorflow for dnn
 - [ ] scikitlearn for metrics (accuracy, etc)
 - [ ] celery to periodically run dnn experiments
 - [x] fastapi for model serving
 - [x] lakefs for dataset and model versioning
 - [x] minio for object storage
 - [ ] version datasets, models and API deployment of models
-- [ ] StreamLit app [https://docs.streamlit.io/library/get-started/create-an-app](https://docs.streamlit.io/library/get-started/create-an-app)
+- [x] StreamLit app [https://docs.streamlit.io/library/get-started/create-an-app](https://docs.streamlit.io/library/get-started/create-an-app)
 - [x] jupyter notebooks for exploration
 - [ ] click cli to clean/prepare data, make a huggingface dataset and other project scripts [click](https://click.palletsprojects.com/en/8.1.x/)
 
