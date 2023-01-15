@@ -26,9 +26,9 @@ def model_config():
   return {"model_config": latest_model.get_config()}
 
 
-@app.get("/model-versions")
+@app.get("/latest-model-version")
 def model_versions():
-  return {"versions": latest_model.get_config()}
+  return {"version": MODEL_VERSION}
 
 
 class Input(BaseModel):

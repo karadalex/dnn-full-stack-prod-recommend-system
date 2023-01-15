@@ -4,6 +4,7 @@ import tensorflow as tf
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.models import Sequential
 import os
+from mlflow import MlflowClient
 
 
 MODEL_VERSION_MAJOR = os.getenv("MODEL_VERSION_MAJOR", 0)
@@ -11,8 +12,13 @@ MODEL_VERSION_MINOR = os.getenv("MODEL_VERSION_MINOR", 1)
 MODEL_VERSION_PATCH = os.getenv("MODEL_VERSION_PATCH", 0)
 MODEL_VERSION = f"{MODEL_VERSION_MAJOR}.{MODEL_VERSION_MINOR}.{MODEL_VERSION_PATCH}"
 MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5000")
+MODEL_NAME = f"movie-recommender-small-v{MODEL_VERSION}"
 
 mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+
+# Register model name in the model registry
+client = MlflowClient()
+client.create_registered_model(MODEL_NAME)
 
 mlflow.tensorflow.autolog()
 
@@ -72,4 +78,4 @@ predictions = model.predict(X_test[:3]) * 10
 print("predicted ratings:", predictions)
 print("actual ratings:", Y_test[:3])
 
-model.save(f"movie-recommender-small-v{MODEL_VERSION}")
+model.save(MODEL_NAME)

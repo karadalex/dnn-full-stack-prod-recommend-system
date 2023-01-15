@@ -6,9 +6,14 @@ services:
 
   mlflow:
     image: ghcr.io/mlflow/mlflow:v2.0.1
-    command: mlflow server --host 0.0.0.0
     ports:
       - 5000:5000
+    # command: mlflow server --host 0.0.0.0 --backend-store-uri postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB} --default-artifact-root s3://bucket_name
+    # TODO: Clean commands below with a custom Dockerfile
+    command: sh -c "
+      apt-get update && apt-get install -y libpq-dev gcc python3-dev &&
+      pip install psycopg2 &&
+      mlflow server --host 0.0.0.0 --backend-store-uri postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}"
     
   lakefs:
     image: treeverse/lakefs
@@ -28,3 +33,17 @@ services:
       - 9002:9000
       - 9003:9001
     command: server /data --console-address ":9001"
+
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
