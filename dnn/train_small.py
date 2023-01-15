@@ -1,7 +1,4 @@
 import pandas as pd
-import numpy as np
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.metrics import mean_squared_error
 import tensorflow as tf
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.models import Sequential
