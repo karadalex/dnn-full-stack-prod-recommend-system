@@ -11,6 +11,7 @@ streamlit = "*"
 fastapi = "*"
 uvicorn = "*"
 click = "*"
+scikit-learn = "*"
 
 [dev-packages]
 ipykernel = "*"
